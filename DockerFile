@@ -1,15 +1,12 @@
 FROM alpine:latest
 
 ENV TERRAFORM_VERSION=0.12.9
-ENV TERRAFORM_PROVIDER_AZURERM=3.0
+ENV TERRAFORM_PROVIDER_AZURERM=3.0.0
 ENV TERRAFORM_PROVIDER_AZUREOPENSHIFT=0.0.3
 
-ENV TERRAFORM_PROVIDER_CLOUDFLARE=2.6.0
-ENV TERRAFORM_PROVIDER_PINGDOM=1.1.1
-ENV TERRAFORM_PROVIDER_K8S=0.7.6
-ENV TERRAFORM_PROVIDER_VAULT=2.10.0
-
-RUN apk add --update bash curl openssl
+RUN apk add --update bash curl openssl gcc musl-dev python3-dev libffi-dev openssl-dev cargo make py3-pip
+RUN pip install --upgrade pip
+RUN pip install azure-cli
 
 ADD https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip ./
 
@@ -25,7 +22,7 @@ ADD https://releases.hashicorp.com/terraform-provider-azurerm/${TERRAFORM_PROVID
 RUN unzip terraform-provider-azurerm_${TERRAFORM_PROVIDER_AZURERM}_linux_amd64.zip -d /home/myuser/terraform.d/plugins/linux_amd64/
 RUN rm -f terraform-provider-azurerm_${TERRAFORM_PROVIDER_AZURERM}_linux_amd64.zip
 
-ADD https://github.com/rh-mobb/terraform-provider-azureopenshift/releases/download/v${TERRAFORM_PROVIDER_AZUREOPENSHIFT}/terraform-provider-azureopenshift_${TERRAFORM_PROVIDER_AZUREOPENSHIFT}_linux_amd64.zip
+ADD https://github.com/rh-mobb/terraform-provider-azureopenshift/releases/download/v${TERRAFORM_PROVIDER_AZUREOPENSHIFT}/terraform-provider-azureopenshift_${TERRAFORM_PROVIDER_AZUREOPENSHIFT}_linux_amd64.zip ./
 RUN unzip terraform-provider-azureopenshift_${TERRAFORM_PROVIDER_AZUREOPENSHIFT}_linux_amd64.zip -d /home/myuser/terraform.d/plugins/linux_amd64/
 RUN rm -rf terraform-provider-azureopenshift_${TERRAFORM_PROVIDER_AZUREOPENSHIFT}_linux_amd64.zip
 
