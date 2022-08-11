@@ -26,6 +26,8 @@ ADD https://github.com/rh-mobb/terraform-provider-azureopenshift/releases/downlo
 RUN unzip terraform-provider-azureopenshift_${TERRAFORM_PROVIDER_AZUREOPENSHIFT}_linux_amd64.zip -d /home/myuser/terraform.d/plugins/linux_amd64/
 RUN rm -rf terraform-provider-azureopenshift_${TERRAFORM_PROVIDER_AZUREOPENSHIFT}_linux_amd64.zip
 
+ADD *.tf /home/myuser/
+
 RUN chown myuser:myuser -R /home/myuser
 RUN chmod +x -R /home/myuser/terraform.d/plugins/linux_amd64/
 USER myuser
